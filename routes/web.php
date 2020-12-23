@@ -1,6 +1,7 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\PaymentController;
 
 /*
 |--------------------------------------------------------------------------
@@ -20,5 +21,8 @@ Route::get('/', function () {
 Route::get('/dashboard', function () {
     return view('dashboard');
 })->middleware(['auth'])->name('dashboard');
+
+Route::get('/payment', [PaymentController::class, 'show'])->middleware(['auth'])->name('payment.show');
+Route::post('/payment', [PaymentController::class, 'store'])->middleware(['auth'])->name('payment.store');
 
 require __DIR__.'/auth.php';

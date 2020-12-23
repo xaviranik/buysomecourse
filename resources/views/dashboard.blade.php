@@ -46,7 +46,7 @@
                     </div>
                     <div class="mt-6 text-2xl font-bold text-gray-900">$40.00</div>
                     <div class="mt-6">
-                        <a class="bg-gray-900 text-white text-md px-5 py-2 rounded-md hover:bg-gray-800" href="#">Buy Course</a>
+                        <a class="bg-gray-900 text-white text-md px-5 py-2 rounded-md hover:bg-gray-800" href="{{ route('payment.show', [ 'price' => 40.00, 'id' => 1 ]) }}">Buy Course</a>
                     </div>
                 </div>
                 <div class="col-span-1 bg-white p-6 rounded-lg shadow">
@@ -69,7 +69,7 @@
                     </div>
                     <div class="mt-6 text-2xl font-bold text-gray-900">$120.99</div>
                     <div class="mt-6">
-                        <a class="bg-gray-900 text-white text-md px-5 py-2 rounded-md hover:bg-gray-800" href="#">Buy Course</a>
+                        <a class="bg-gray-900 text-white text-md px-5 py-2 rounded-md hover:bg-gray-800" href="{{ route('payment.show', [ 'price' => 120.99, 'id' => 2 ]) }}">Buy Course</a>
                     </div>
                 </div>
             </div>
