@@ -34,15 +34,78 @@
                     </div>
                     <div class="mt-8 text-4xl font-bold text-gray-900">${{ request()->price }}</div>
                     <div class="mt-12">
-                        <form method="POST" action="{{ route('payment.store', []) }}">
-                            {{ csrf_field()  }}
+                        <form action="{{ route('payment.store') }}" method="post" id="payment-form">
+                            {{ csrf_field() }}
                             <input type="hidden" name="product_id" value="{{ request()->id }}">
                             <input type="hidden" name="price" value="{{ request()->price }}">
-                            <button type="submit" class="bg-gray-900 text-white text-md px-5 py-2 rounded-md hover:bg-gray-800">Checkout</button>
+                            <div class="form-row">
+                                <label class="text-lg text-gray-900 font-semibold" for="card-element">
+                                    Credit or debit card
+                                </label>
+                                <div class="py-6" id="card-element">
+                                    <!-- A Stripe Element will be inserted here. -->
+                                </div>
+
+                                <!-- Used to display Element errors. -->
+                                <div id="card-errors" role="alert"></div>
+                            </div>
+
+                            <button class="mt-6 bg-gray-900 text-white text-md px-5 py-2 rounded-md hover:bg-gray-800">Submit Payment</button>
                         </form>
                     </div>
                 </div>
             </div>
         </div>
     </div>
+
+    <script>
+        var stripe = Stripe("pk_test_51I0TbbKs3sxMXkXdHHxahBmBMU0pYf5np99IKZtCzau1UsWHg2LXKwdIcCjArdTpU4qaztQdQhXCdwfIWibkEaQB00LCSogCfd");
+        var elements = stripe.elements();
+
+        var style = {
+            base: {
+                fontSize: '24px',
+                color: '#111827',
+            },
+        };
+
+        // Create an instance of the card Element.
+        var card = elements.create('card', {style: style});
+
+        // Add an instance of the card Element into the `card-element` <div>.
+        card.mount('#card-element');
+
+
+        // Create a token or display an error when the form is submitted.
+        var form = document.getElementById('payment-form');
+        form.addEventListener('submit', function(event) {
+            event.preventDefault();
+
+            stripe.createToken(card).then(function(result) {
+                if (result.error) {
+                    // Inform the customer that there was an error.
+                    var errorElement = document.getElementById('card-errors');
+                    errorElement.textContent = result.error.message;
+                } else {
+                    // Send the token to server.
+                    stripeTokenHandler(result.token);
+                }
+            });
+        });
+
+        function stripeTokenHandler(token) {
+            // Insert the token ID into the form so it gets submitted to the server
+            var form = document.getElementById('payment-form');
+            var hiddenInput = document.createElement('input');
+            hiddenInput.setAttribute('type', 'hidden');
+            hiddenInput.setAttribute('name', 'stripeToken');
+            hiddenInput.setAttribute('value', token.id);
+            form.appendChild(hiddenInput);
+
+            // Submit the form
+            form.submit();
+        }
+    </script>
+
+
 </x-app-layout>
