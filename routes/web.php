@@ -24,5 +24,6 @@ Route::get('/dashboard', function () {
 
 Route::get('/payment', [PaymentController::class, 'show'])->middleware(['auth'])->name('payment.show');
 Route::post('/payment', [PaymentController::class, 'store'])->middleware(['auth'])->name('payment.store');
+Route::get('/payment/success', [PaymentController::class, 'success'])->middleware(['auth'])->name('payment.success');
 
 require __DIR__.'/auth.php';

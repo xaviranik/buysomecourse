@@ -21,7 +21,7 @@ class PaymentController extends Controller
     /**
      * @param  \Illuminate\Http\Request  $request
      *
-     * @return \Illuminate\Http\JsonResponse
+     * @return \Illuminate\Http\RedirectResponse
      * @throws \Stripe\Exception\ApiErrorException
      */
     public function store(Request $request)
@@ -35,10 +35,12 @@ class PaymentController extends Controller
             'source'      => $request->stripeToken,
         ]);
 
-        return response()->json([
-            'status' => 'payment done',
-            'charge' => $charge,
-        ], 200);
+        return redirect()->route('payment.success');
+    }
+
+    public function success()
+    {
+        return view('success');
     }
 
 }
